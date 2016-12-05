@@ -25,7 +25,6 @@ schema_view = get_swagger_view(title='Snippets API')
 urlpatterns = [
     url('^$', schema_view),
     url(r'^admin/', admin.site.urls),
-    url(r'^user/', user_info),
 
     url(r'^api/user', UserApi.as_view()),
 ]

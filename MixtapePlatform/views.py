@@ -6,9 +6,6 @@ from rest_framework.generics import GenericAPIView
 from MixtapePlatform.models import User
 # Create your views here.
 
-def user_info(request):
-    return HttpResponse('Hello!')
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -19,3 +16,6 @@ class UserApi(GenericAPIView, mixins.ListModelMixin):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+def login_validate(request):
+    
