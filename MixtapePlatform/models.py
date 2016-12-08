@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+
+
 # Create your models here.
 """
 class Audio
@@ -19,9 +21,9 @@ class Audio(models.Model):
         'Artist',
         on_delete = models.CASCADE
     )
-    stream_url = models.CharField(max_length=100)
-    artwork_url = models.CharField(max_length=100)
-    waveform_url = models.CharField(max_length=100)
+    stream_url = models.URLField(max_length=100)
+    artwork_url = models.URLField(max_length=100)
+    waveform_url = models.URLField(max_length=100)
     description = models.CharField(max_length=100)
 """
 class Beat
@@ -54,7 +56,7 @@ class Mixtape(models.Model):
         'Audio',
         on_delete = models.CASCADE
     )
-    voice_url = models.CharField(max_length=100)
+    voice_url = models.URLField(max_length=100)
     lyrics = models.CharField(max_length=2048)
 """
 class User
@@ -70,8 +72,8 @@ class User(models.Model):
     sequence = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
-    profile_url = models.CharField(max_length=100)
-    thumbnail_url = models.CharField(max_length=100)
+    profile_url = models.URLField(max_length=100)
+    thumbnail_url = models.URLField(max_length=100)
     nickname = models.CharField(max_length=12)
 """
 class Artist
