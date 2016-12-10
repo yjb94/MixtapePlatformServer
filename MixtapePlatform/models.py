@@ -30,6 +30,7 @@ class Beat
 
 sequence
 audio_info_fk
+soundcloud_id
 """
 class Beat(models.Model):
     sequence = models.AutoField(primary_key=True)
@@ -37,6 +38,8 @@ class Beat(models.Model):
         'Audio',
         on_delete = models.CASCADE
     )
+    soundcloud_id = models.CharField(max_length=100)
+
 """
 class Mixtape
 
