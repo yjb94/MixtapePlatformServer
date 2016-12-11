@@ -26,6 +26,10 @@ urlpatterns = [
     url('^$', schema_view),
     url(r'^admin/', admin.site.urls),
     url(r'^api/user', UserApi.as_view()),
-    url(r'^api/login', LoginApi.as_view())
+    url(r'^api/login', LoginApi.as_view()),
+    url(r'^api/audio', AudioApi.as_view()),
+    url(r'^api/artist', ArtistApi.as_view()),
+    url(r'^api/like', LikeApi.as_view()),
+    url(r'^api/follow', FollowApi.as_view())
 ]
 
