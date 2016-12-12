@@ -167,7 +167,7 @@ class BeatApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mi
         return obj
 
     def get(self, request, *args, **kwargs):
-        return Response(self.serializer_class(self.get_queryset(), many=True).data)
+        return Response(self.serializer_class(self.get_queryset(), many=True).data  )
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -406,7 +406,7 @@ class FollowApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, 
 
 
 #example http://api.soundcloud.com/tracks/27388810?client_id=
-soundcloud_client_id = "?client_id=175c043157ffae2c6d5fed16c3d95a4c"
+soundcloud_client_id = "&client_id=175c043157ffae2c6d5fed16c3d95a4c"
 soundcloud_api_url = "http://api.soundcloud.com/tracks/"
 
 class ChartApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
