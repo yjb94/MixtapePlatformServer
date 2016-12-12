@@ -49,6 +49,9 @@ class Audio(models.Model):
     artwork_url = models.CharField(max_length=100)
     waveform_url = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default=" ")
+    artist = models.CharField(max_length=100, default=" ")
+    like_cnt = models.IntegerField(max_length=100, default=0)
 """
 class Beat
 
@@ -58,8 +61,7 @@ soundcloud_id
 """
 class Beat(models.Model):
     sequence = models.AutoField(primary_key=True)
-    audio_info = serializers.PrimaryKeyRelatedField(queryset=Audio.objects)
-    audio_info_fk = models.ForeignKey(
+    audio_info = models.ForeignKey(
         Audio,
         on_delete = models.CASCADE
     )
@@ -76,7 +78,6 @@ lyrics
 """
 class Mixtape(models.Model):
     sequence = models.AutoField(primary_key=True)
-    audio_info = serializers.PrimaryKeyRelatedField(queryset=Audio.objects)
     artist_fk = models.ForeignKey(
         Artist,
         related_name="Audio_fk",
@@ -86,7 +87,7 @@ class Mixtape(models.Model):
         Beat,
         on_delete = models.CASCADE
     )
-    audio_info_fk = models.ForeignKey(
+    audio_info = models.ForeignKey(
         Audio,
         on_delete = models.CASCADE
     )

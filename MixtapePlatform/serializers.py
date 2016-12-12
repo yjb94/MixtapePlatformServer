@@ -92,7 +92,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 class AudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Audio
-        fields = ('sequence','stream_url','artwork_url','waveform_url','description')
+        fields = ('sequence','stream_url','artwork_url','waveform_url','description','title','like_cnt','artist')
 
     def get_object(self, pk):
         try:
@@ -110,9 +110,10 @@ class AudioSerializer(serializers.ModelSerializer):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BeatSerializer(serializers.ModelSerializer):
+    audio_info = AudioSerializer()
     class Meta:
         model = Beat
-        fields = ('sequence','audio_info_fk','sc_id','audio_info')
+        fields = ('sequence','audio_info','sc_id')
 
     def get_object(self, pk):
         try:
@@ -130,9 +131,10 @@ class BeatSerializer(serializers.ModelSerializer):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MixtapeSerializer(serializers.ModelSerializer):
+    audio_info = AudioSerializer()
     class Meta:
         model = Mixtape
-        fields = ('sequence', 'artist_fk', 'original_beat_fk', 'audio_info_fk', 'voice_url', 'lyrics')
+        fields = ('sequence', 'artist_fk', 'original_beat_fk', 'audio_info', 'voice_url', 'lyrics')
 
     def get_object(self, pk):
         try:
