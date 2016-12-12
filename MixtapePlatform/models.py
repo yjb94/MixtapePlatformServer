@@ -45,7 +45,6 @@ description     Description about Audio
 """
 class Audio(models.Model):
     sequence = models.AutoField(primary_key=True)
-    artist_fk = models.ForeignKey(Artist, related_name="Audio_fk", on_delete = models.CASCADE)
     stream_url = models.CharField(max_length=100)
     artwork_url = models.CharField(max_length=100)
     waveform_url = models.CharField(max_length=100)
@@ -59,6 +58,7 @@ soundcloud_id
 """
 class Beat(models.Model):
     sequence = models.AutoField(primary_key=True)
+    audio_info = serializers.PrimaryKeyRelatedField(queryset=Audio.objects)
     audio_info_fk = models.ForeignKey(
         Audio,
         on_delete = models.CASCADE
@@ -76,6 +76,12 @@ lyrics
 """
 class Mixtape(models.Model):
     sequence = models.AutoField(primary_key=True)
+    audio_info = serializers.PrimaryKeyRelatedField(queryset=Audio.objects)
+    artist_fk = models.ForeignKey(
+        Artist,
+        related_name="Audio_fk",
+        on_delete=models.CASCADE
+    )
     original_beat_fk = models.ForeignKey(
         Beat,
         on_delete = models.CASCADE

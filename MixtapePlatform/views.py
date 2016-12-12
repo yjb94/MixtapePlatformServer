@@ -113,6 +113,7 @@ class LoginApi(GenericAPIView, mixins.ListModelMixin):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
 class AudioApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
     queryset = Audio.objects.all()
     serializer_class = AudioSerializer
@@ -127,12 +128,52 @@ class AudioApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, m
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        artist_fk = request.data.get('artist_fk')
-        artist = Artist.objects.all().get(sequence=artist_fk)
-        if(serializer.is_valid()):
-            serializer.save(artist_fk=artist)
-            return Response(serializer.data, status=status.HTTP_200_OK )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if (serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            # artist_fk = request.data.get('artist_fk')
+        # artist = Artist.objects.all().get(sequence=artist_fk)
+        # if(serializer.is_valid()):
+        #     serializer.save(artist_fk=artist)
+        #     return Response(serializer.data, status=status.HTTP_200_OK )
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MixtapeApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
+    queryset = Mixtape.objects.all()
+    serializer_class = MixtapeSerializer
+
+    def get_object(self, pk):
+        queryset = self.get_queryset()
+        obj = queryset.get(sequence=pk)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        return Response(self.serializer_class(self.get_queryset(), many=True).data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if (serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+class BeatApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
+    queryset = Beat.objects.all()
+    serializer_class = BeatSerializer
+
+    def get_object(self, pk):
+        queryset = self.get_queryset()
+        obj = queryset.get(sequence=pk)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        return Response(self.serializer_class(self.get_queryset(), many=True).data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if (serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AudioDetailApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
@@ -336,7 +377,8 @@ class FollowApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, 
             serializer = UserFollowSerializer(data=request.data)
             if (serializer.is_valid()):
                 serializer.save(artist_fk=artist, user_fk=user)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                serializer_list = UserFollowSerializer(UserFollow.objects.filter(artist_fk=artist),many=True)
+                return Response(serializer_list, status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -367,10 +409,6 @@ class FollowApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, 
 soundcloud_client_id = "?client_id=175c043157ffae2c6d5fed16c3d95a4c"
 soundcloud_api_url = "http://api.soundcloud.com/tracks/"
 
-#class AudioAPI(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
-#    queryset = Audio.objects.all()
-#    serializer_class = AudioSerializer
-
 class ChartApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin):
     queryset = Chart.objects.all()
     serializer_class = ChartSerializer
@@ -394,10 +432,8 @@ class ChartApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, m
                 item['score'] = UserLike.objects.filter(audio_fk=target.audio_info_fk).count()
             elif chart_type == 2:
                 item['score'] = UserFollow.objects.filter(artist_fk=target.sequence).count()
-            item['target'] = target.pk
+            item['target'] = target
             ranking_array.append(item)
         ranking_array.sort(key = lambda x: -x['score'])
 
-        queryset = self.get_queryset()
-        for idx, rank in enumerate(ranking_array):
-            print(idx,rank)
+        return Response(ranking_array,status=status.HTTP_200_OK)

@@ -34,7 +34,9 @@ urlpatterns = [
     url(r'^api/artist/$', ArtistApi.as_view()),
     url(r'^api/like', LikeApi.as_view()),
     url(r'^api/follow', FollowApi.as_view()),
-    url(r'^api/chart/(?P<sequence>[0-2]+)/$', ChartApi.as_view())
+    url(r'^api/chart/(?P<sequence>[0-2]+)/$', ChartApi.as_view()),
+    url(r'^api/beat/$', BeatApi.as_view()),
+    url(r'^api/mixtape/$', MixtapeApi.as_view()),
     #url(r'^api/artist/mixtape/(?P<sequence>[0-9]+)/$', ArtistMixtapeApi.as_view()),
     #url(r'^api/artist/follower/(?P<sequence>[0-9]+)/$', ArtistFollowerApi.as_view()),
 ]

@@ -92,7 +92,47 @@ class ArtistSerializer(serializers.ModelSerializer):
 class AudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Audio
-        fields = ('sequence','stream_url','artwork_url','waveform_url','description','artist_fk')
+        fields = ('sequence','stream_url','artwork_url','waveform_url','description')
+
+    def get_object(self, pk):
+        try:
+            return self.Meta.model.objects.get(sequence=pk)
+        except self.Meta.model.DoesNotExist:
+            raise Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, validated_data):
+        obj = self.Meta.model.objects.create(**validated_data)
+        return obj
+
+    def delete(self, pk):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class BeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Beat
+        fields = ('sequence','audio_info_fk','sc_id','audio_info')
+
+    def get_object(self, pk):
+        try:
+            return self.Meta.model.objects.get(sequence=pk)
+        except self.Meta.model.DoesNotExist:
+            raise Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, validated_data):
+        obj = self.Meta.model.objects.create(**validated_data)
+        return obj
+
+    def delete(self, pk):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MixtapeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mixtape
+        fields = ('sequence', 'artist_fk', 'original_beat_fk', 'audio_info_fk', 'voice_url', 'lyrics')
 
     def get_object(self, pk):
         try:
