@@ -25,7 +25,7 @@ SECRET_KEY = 'eu6^ovgx79rlaz6v$!k+_n-19*!efhr-#ed^a^b%*p^&i82&2m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -123,7 +123,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CRON_CLASSES = [
-    "MixtapePlatform.cron.ChartUpdate",
-    # ...
-]
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)

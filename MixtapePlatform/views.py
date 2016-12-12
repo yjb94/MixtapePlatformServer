@@ -401,5 +401,3 @@ class ChartApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, m
         queryset = self.get_queryset()
         for idx, rank in enumerate(ranking_array):
             print(idx,rank)
-
-
