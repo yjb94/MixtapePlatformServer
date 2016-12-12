@@ -47,6 +47,7 @@ class UserLikeSerializer(serializers.ModelSerializer):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UserFollowSerializer(serializers.ModelSerializer):
+    user_fk = UserSerializer()
     class Meta:
         model = UserFollow
         fields = ('sequence', 'user_fk', 'artist_fk')
@@ -69,6 +70,7 @@ class UserFollowSerializer(serializers.ModelSerializer):
 
 class ArtistSerializer(serializers.ModelSerializer):
 
+    user_info_fk = UserSerializer()
     class Meta:
         model = Artist
         fields = ('sequence','user_info_fk','aka')
@@ -132,6 +134,7 @@ class BeatSerializer(serializers.ModelSerializer):
 
 class MixtapeSerializer(serializers.ModelSerializer):
     audio_info = AudioSerializer()
+    artist_fk = UserSerializer()
     class Meta:
         model = Mixtape
         fields = ('sequence', 'artist_fk', 'original_beat_fk', 'audio_info', 'voice_url', 'lyrics')

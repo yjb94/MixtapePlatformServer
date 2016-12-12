@@ -339,23 +339,18 @@ class FollowApi(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, 
         obj = queryset.get(user_fk=user, artist_fk=artist)
         return obj
     def get(self, request, *args, **kwargs):
-        user_sequence = request.query_params.get('user')
-        artist_sequence = request.query_params.get('artist')
+        artist_sequence = kwargs.get('sequence')
         all = request.query_params.get('all')
         if (all is not None and int(all) == 1):
             return Response(self.serializer_class(self.get_queryset(), many=True).data)
         else:
             try:
-                user = User.objects.all().get(sequence=user_sequence)
-            except:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            try:
                 artist = Artist.objects.all().get(sequence=artist_sequence)
             except:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             try:
-                relation = self.get_object(user,artist)
-                serializer = UserLikeSerializer(relation)
+                userLike = UserFollow.objects.filter(artist_fk = artist)
+                serializer = UserFollowSerializer(userLike, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except:
                 return Response(status=status.HTTP_400_BAD_REQUEST)

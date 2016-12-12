@@ -79,9 +79,8 @@ lyrics
 class Mixtape(models.Model):
     sequence = models.AutoField(primary_key=True)
     artist_fk = models.ForeignKey(
-        Artist,
-        related_name="Audio_fk",
-        on_delete=models.CASCADE
+        User,
+        on_delete = models.CASCADE
     )
     original_beat_fk = models.ForeignKey(
         Beat,
