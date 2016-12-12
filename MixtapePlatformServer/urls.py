@@ -19,17 +19,23 @@ from rest_framework_swagger.views import get_swagger_view
 
 from MixtapePlatform.views import *
 
-
 schema_view = get_swagger_view(title='Snippets API')
 
 urlpatterns = [
     url('^$', schema_view),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/user', UserApi.as_view()),
+    url(r'^api/user/$', UserApi.as_view()),
     url(r'^api/login', LoginApi.as_view()),
-    url(r'^api/audio', AudioApi.as_view()),
-    url(r'^api/artist', ArtistApi.as_view()),
+    url(r'^api/audio/(?P<sequence>[0-9]+)$', AudioDetailApi.as_view()),
+    url(r'^api/audio/like/(?P<sequence>[0-9]+)/$', AudioLikeApi.as_view()),
+    url(r'^api/audio/$', AudioApi.as_view()),
+    url(r'^api/artist/follow/(?P<sequence>[0-9]+)/$', ArtistFollowApi.as_view()),
+    url(r'^api/artist/(?P<sequence>[0-9]+)/$', ArtistDetailApi.as_view()),
+    url(r'^api/artist/$', ArtistApi.as_view()),
     url(r'^api/like', LikeApi.as_view()),
-    url(r'^api/follow', FollowApi.as_view())
+    url(r'^api/follow', FollowApi.as_view()),
+    url(r'^api/chart/(?P<sequence>[0-2]+)/$', ChartApi.as_view())
+    #url(r'^api/artist/mixtape/(?P<sequence>[0-9]+)/$', ArtistMixtapeApi.as_view()),
+    #url(r'^api/artist/follower/(?P<sequence>[0-9]+)/$', ArtistFollowerApi.as_view()),
 ]
 

@@ -108,3 +108,23 @@ class AudioSerializer(serializers.ModelSerializer):
         obj = self.get_object(pk)
         obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ChartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chart
+        fields = ('sequence', 'chart_type', 'date')
+
+    def get_object(self, pk):
+        try:
+            return self.Meta.model.objects.get(sequence=pk)
+        except self.Meta.model.DoesNotExist:
+            raise Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, validated_data):
+        obj = self.Meta.model.objects.create(**validated_data)
+        return obj
+
+    def delete(self, pk):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
